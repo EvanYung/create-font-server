@@ -2,8 +2,8 @@ import { Result } from '../config/result'
 
 const fakeUserInfo = {
   userId: '1',
-  username: 'vben',
-  realName: 'Vben Admin',
+  username: 'Evan',
+  realName: 'Evan Admin',
   desc: 'manager',
   password: '123456',
   token: 'fakeToken1',

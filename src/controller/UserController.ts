@@ -3,6 +3,7 @@ import UserService, { LoginPara } from '../service/UserService'
 import { validate, object, number, string, define, Describe } from 'superstruct'
 import { isMobile } from 'src/utils/is'
 import { structErrorMsg } from 'src/utils'
+import { Result } from 'src/config/result'
 
 const Phone = define<string>('Phone', isMobile)
 
@@ -24,10 +25,7 @@ class UserController {
 
       ctx.body = await this.service.login(para)
     } catch (err) {
-      ctx.body = {
-        code: err.code || 1,
-        message: err.message || '请求失败',
-      }
+      ctx.body = Result.error(err.code, err.message)
     }
   }
 
@@ -41,10 +39,7 @@ class UserController {
 
       ctx.body = await this.service.getUserInfoById()
     } catch (err) {
-      ctx.body = {
-        code: err.code || 1,
-        message: err.message || '请求失败',
-      }
+      ctx.body = Result.error(err.code, err.message)
     }
   }
 }

@@ -22,9 +22,13 @@ export default class FontService {
 
     const fontRepository = MySqlDataSource.getRepository('fonts')
 
-    const [, length] = await fontRepository.findAndCount()
+    const [{ id: nId }] = await fontRepository.find({
+      order: {
+        id: 'DESC',
+      },
+    })
 
-    const codeHex4 = (1000 + length + 1).toString(16).padStart(4, '0')
+    const codeHex4 = (1000 + nId + 1).toString(16).padStart(4, '0')
     const code = `&#x${codeHex4};`
 
     getFont.setSvg(code, para.svg)

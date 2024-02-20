@@ -2,6 +2,7 @@ import { Context } from 'koa'
 import FontService, { FontPara } from '../service/FontService'
 import { validate, object, string, Describe } from 'superstruct'
 import { structErrorMsg } from 'src/utils'
+import { Result } from 'src/config/result'
 
 const FontStruct: Describe<FontPara> = object({
   text: string(),
@@ -21,10 +22,7 @@ class FontController {
 
       ctx.body = await this.service.add(para)
     } catch (err) {
-      ctx.body = {
-        code: err.code || 1,
-        message: err.message || '请求失败',
-      }
+      ctx.body = Result.error(err.code, err.message)
     }
   }
 
@@ -38,10 +36,7 @@ class FontController {
 
       ctx.body = await this.service.delete(+ctx.query.id)
     } catch (err) {
-      ctx.body = {
-        code: err.code || 1,
-        message: err.message || '请求失败',
-      }
+      ctx.body = Result.error(err.code, err.message)
     }
   }
 }
