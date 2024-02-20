@@ -3,3 +3,9 @@ export interface RetResult {
   message: string
   data?: any
 }
+
+export interface PageParams {
+  pageNum: number
+  pageSize: number
+  [x: string]: any
+}

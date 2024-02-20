@@ -3,6 +3,7 @@ import FontService, { FontPara } from '../service/FontService'
 import { validate, object, string, Describe } from 'superstruct'
 import { structErrorMsg } from 'src/utils'
 import { Result } from 'src/config/result'
+import { PageParams } from '#/config'
 
 const FontStruct: Describe<FontPara> = object({
   text: string(),
@@ -11,6 +12,24 @@ const FontStruct: Describe<FontPara> = object({
 
 class FontController {
   private service: FontService = new FontService()
+
+  pages = async (ctx: Context) => {
+    try {
+      ctx.checkQuery('pageNum', 'required').notEmpty()
+
+      const errors = await ctx.validationErrors()
+
+      if (errors) throw { code: 400, message: JSON.stringify(errors) }
+
+      const para: PageParams = {
+        pageNum: +ctx.query.pageNum,
+        pageSize: +ctx.query.pageSize || 10,
+      }
+      ctx.body = await this.service.pages(para)
+    } catch (err) {
+      ctx.body = Result.error(err.code, err.message)
+    }
+  }
 
   add = async (ctx: Context) => {
     const body = ctx.request.body

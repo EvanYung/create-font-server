@@ -1,3 +1,4 @@
+import { PageParams } from '#/config'
 import { Result } from '../config/result'
 import fontCarrier from 'font-carrier'
 import fsx from 'fs-extra'
@@ -17,6 +18,26 @@ fsx.ensureDir(filePath)
 const fontPath = `${filePath}/createFont.ttf`
 
 export default class FontService {
+  async pages(para: PageParams) {
+    const fontRepository = MySqlDataSource.getRepository('fonts')
+
+    const [list, total] = await fontRepository.findAndCount({
+      skip: (para.pageNum - 1) * para.pageSize,
+      take: para.pageSize,
+    })
+
+    return Result.success(
+      {
+        list,
+        total,
+        current: para.pageNum,
+        size: para.pageSize,
+        pages: Math.ceil(total / para.pageSize),
+      },
+      'get success'
+    )
+  }
+
   async add(para: FontPara) {
     const getFont = fs.existsSync(fontPath) ? fontCarrier.transfer(fontPath) : fontCarrier.create()
 
