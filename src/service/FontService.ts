@@ -22,13 +22,9 @@ export default class FontService {
 
     const fontRepository = MySqlDataSource.getRepository('fonts')
 
-    const [{ id: nId }] = await fontRepository.find({
-      order: {
-        id: 'DESC',
-      },
-    })
+    const font = await fontRepository.save({ ...para, code: '' })
 
-    const codeHex4 = (1000 + nId + 1).toString(16).padStart(4, '0')
+    const codeHex4 = (1000 + font.id + 1).toString(16).padStart(4, '0')
     const code = `&#x${codeHex4};`
 
     getFont.setSvg(code, para.svg)
@@ -37,9 +33,9 @@ export default class FontService {
       path: `${filePath}/createFont`,
     })
 
-    const font = await fontRepository.save({ ...para, code })
+    await fontRepository.update(font.id, { code })
 
-    return Result.success(font, 'add success')
+    return Result.success({ ...font, code }, 'add success')
   }
 
   async delete(id: number) {
