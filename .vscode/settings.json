@@ -1,17 +1,7 @@
 {
-  "sqltools.connections": [
-    {
-      "mysqlOptions": {
-        "authProtocol": "default"
-      },
-      "previewLimit": 50,
-      "server": "localhost",
-      "port": 3306,
-      "driver": "MySQL",
-      "name": "mysql-createFont",
-      "database": "createFont",
-      "username": "root",
-      "password": "123456"
-    }
+  "cSpell.words": [
+    "superstruct",
+    "tsup",
+    "websockify"
   ]
 }
