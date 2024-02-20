@@ -1,5 +1,6 @@
 import UserRoutes from './UserRoutes'
 import FileRoutes from './FileRoutes'
+import FontRoutes from './FontRoutes'
 
 export default [
   // user
@@ -7,4 +8,7 @@ export default [
 
   // file
   ...FileRoutes,
+
+  // font
+  ...FontRoutes,
 ]

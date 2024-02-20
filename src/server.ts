@@ -18,6 +18,7 @@ import AppRoutes from './routes'
 
 import staticValidator from './middlewares/staticValidator'
 import errorHandler from './middlewares/errorHandler'
+import { MySqlDataSource } from './config/database'
 
 // @ts-expect-error
 const app = websockify(new Koa())
@@ -97,6 +98,7 @@ app.use(router.routes())
 app.use(router.allowedMethods())
 
 const startService = async (pid = process.pid) => {
+  await MySqlDataSource.initialize()
   app.listen(APP_PORT, APP_HOST, () => {
     const server =
       APP_HOST === '0.0.0.0'
