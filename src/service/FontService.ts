@@ -26,16 +26,7 @@ export default class FontService {
       take: para.pageSize,
     })
 
-    return Result.success(
-      {
-        list,
-        total,
-        current: para.pageNum,
-        size: para.pageSize,
-        pages: Math.ceil(total / para.pageSize),
-      },
-      'get success'
-    )
+    return Result.success(Result.page(list, total, para), 'get success')
   }
 
   async add(para: FontPara) {

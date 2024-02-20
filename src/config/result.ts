@@ -1,4 +1,4 @@
-import { RetResult } from '#/config'
+import { PageParams, RetResult } from '#/config'
 
 export class Result {
   static success(data: unknown, message: string): RetResult {
@@ -14,6 +14,16 @@ export class Result {
       code,
       message,
       data: null,
+    }
+  }
+
+  static page(list: any, total: number, para: PageParams) {
+    return {
+      list,
+      total,
+      current: para.pageNum,
+      size: para.pageSize,
+      pages: Math.ceil(total / para.pageSize),
     }
   }
 }
