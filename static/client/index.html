@@ -28,8 +28,8 @@
 
 <body>
   <script type="importmap">
-      {
-        "imports": {
+    {
+      "imports": {
           "vue3-sfc-loader": "https://cdn.jsdelivr.net/npm/vue3-sfc-loader/dist/vue3-sfc-loader.esm.js",
           "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.prod.js",
           "element-plus": "https://unpkg.com/element-plus@latest/dist/index.full.min.mjs",
@@ -42,9 +42,13 @@
           "dayjs/": "https://unpkg.com/dayjs/esm/",
           "mitt": "https://unpkg.com/mitt/dist/mitt.mjs",
           "async-validator": "https://unpkg.com/async-validator@4/dist-web/index.js",
-          "@vueuse/shared": "https://unpkg.com/@vueuse/shared/index.esm.js",
-          "@vueuse/core": "https://unpkg.com/@vueuse/core/index.esm.js",
-          "vue-demi": "https://unpkg.com/vue-demi/lib/v3/index.mjs"
+          "@vueuse/shared": "https://unpkg.com/@vueuse/shared/index.mjs",
+          "@vueuse/core": "https://unpkg.com/@vueuse/core/index.mjs",
+          "vue-demi": "https://unpkg.com/vue-demi/lib/v3/index.mjs",
+          "fabric": "https://cdn.jsdelivr.net/npm/fabric@5.3.0/+esm",
+          "svg-text-to-path": "https://cdn.jsdelivr.net/npm/svg-text-to-path@1.1.4/+esm",
+          "mapHandler": "https://unpkg.com/svg-text-to-path@1.1.4/handlers/map.js",
+          "httpHandler": "https://unpkg.com/svg-text-to-path@1.1.4/handlers/http.js"
       }
   }
   </script>
@@ -53,14 +57,24 @@
   </div>
   <script type="module">
     import * as Vue from 'vue'
+    import * as vueuse from '@vueuse/core'
     import { loadModule } from 'vue3-sfc-loader'
     import { createApp, ref, onMounted, defineAsyncComponent } from 'vue'
     import ElementPlus from 'element-plus'
     import * as Elp from 'element-plus'
+    import * as fabric from 'fabric'
+    import * as svgTextToPath from 'svg-text-to-path'
+    import mapHandler from 'mapHandler'
+    import httpHandler from 'httpHandler'
 
     const options = {
       moduleCache: {
         vue: Vue,
+        fabric,
+        'svg-text-to-path': svgTextToPath,
+        httpHandler,
+        mapHandler,
+        '@vueuse/core': vueuse,
         'element-plus': Elp,
       },
       async getFile(url) {

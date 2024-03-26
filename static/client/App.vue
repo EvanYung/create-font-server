@@ -1,19 +1,19 @@
 <template>
   <div>
-    <p class="text-size-20px text-red-600">{{ test }}</p>
-    <ElButton @click="handleClick(test)">{{ test }}</ElButton>
-    <QuickWord @choose="handleClick" />
+    <CustomWord ref="cwRef" />
+    <ElButton @click="handleSave">保存</ElButton>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { ElMessage, ElButton } from 'element-plus'
-import QuickWord from './components/QuickWord.vue'
-const test = ref('123456')
+import CustomWord from './components/CustomWord.vue'
+import { ElButton } from 'element-plus'
 
-const handleClick = (value: string) => {
-  ElMessage.info(value)
+const cwRef = ref<InstanceType<typeof CustomWord>>()
+
+function handleSave() {
+  cwRef.value?.handleSave()
 }
 </script>
 
