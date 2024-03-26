@@ -45,10 +45,8 @@
           "@vueuse/shared": "https://unpkg.com/@vueuse/shared/index.mjs",
           "@vueuse/core": "https://unpkg.com/@vueuse/core/index.mjs",
           "vue-demi": "https://unpkg.com/vue-demi/lib/v3/index.mjs",
-          "fabric": "https://cdn.jsdelivr.net/npm/fabric@5.3.0/+esm",
-          "svg-text-to-path": "https://cdn.jsdelivr.net/npm/svg-text-to-path@1.1.4/+esm",
-          "mapHandler": "https://unpkg.com/svg-text-to-path@1.1.4/handlers/map.js",
-          "httpHandler": "https://unpkg.com/svg-text-to-path@1.1.4/handlers/http.js"
+          "fabric": "https://cdn.jsdelivr.net/npm/fabric@5.2.4/+esm",
+          "svg-text-to-path": "https://cdn.jsdelivr.net/npm/svg-text-to-path@1.1.4/+esm"
       }
   }
   </script>
@@ -64,16 +62,12 @@
     import * as Elp from 'element-plus'
     import * as fabric from 'fabric'
     import * as svgTextToPath from 'svg-text-to-path'
-    import mapHandler from 'mapHandler'
-    import httpHandler from 'httpHandler'
 
     const options = {
       moduleCache: {
         vue: Vue,
         fabric,
         'svg-text-to-path': svgTextToPath,
-        httpHandler,
-        mapHandler,
         '@vueuse/core': vueuse,
         'element-plus': Elp,
       },

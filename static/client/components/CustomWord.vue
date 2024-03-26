@@ -7,10 +7,6 @@ import { onKeyStroke } from '@vueuse/core'
 import { ElMessage, ElButton, ElInput } from 'element-plus'
 // @ts-ignore
 import { replaceAllInString } from 'svg-text-to-path'
-// @ts-ignore
-import mapHandler from 'mapHandler'
-// @ts-ignore
-import httpHandler from 'httpHandler'
 
 const canvasWidth = 400
 const canvasHeight = 400
@@ -83,24 +79,15 @@ async function handleSave() {
 
   const svgStr = fbCanvas.toSVG()
 
-  const out = await replaceAllInString(svgStr, {
-    // fontsUrl: '/fonts',
-    fontMap: {
-      SimSun: {
-        '400': '/fonts/SimSun/SimSun.ttf',
-      },
-    },
-    handlers: [mapHandler, httpHandler],
-    group: true,
-  })
+  const out = await replaceAllInString(svgStr)
 
   console.log('🚀 ~ handleSave ~ out:', out)
 
   // await loadFonts()
 
-  fbObjects.value = []
-  fbCanvas.dispose()
-  fbCanvas.setBackgroundColor('#F8F9FB', () => {})
+  // fbObjects.value = []
+  // fbCanvas.dispose()
+  // fbCanvas.setBackgroundColor('#F8F9FB', () => {})
 }
 
 defineExpose({
