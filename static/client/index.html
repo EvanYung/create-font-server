@@ -8,6 +8,11 @@
   <title>造字呀</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@unocss/reset/tailwind.min.css" />
   <link rel="stylesheet" href="//unpkg.com/element-plus/dist/index.css" />
+  <style>
+    [un-cloak] {
+      display: none;
+    }
+  </style>
   <script>
     // pass unocss options
     window.__unocss = {
@@ -18,7 +23,7 @@
       },
     }
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/@unocss/runtime"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@unocss/runtime/attributify.global.js"></script>
 </head>
 
 <body>
@@ -48,7 +53,7 @@
   </div>
   <script type="module">
     import * as Vue from 'vue'
-    import { loadModule } from 'vue3-sfc-loader';
+    import { loadModule } from 'vue3-sfc-loader'
     import { createApp, ref, onMounted, defineAsyncComponent } from 'vue'
     import ElementPlus from 'element-plus'
     import * as Elp from 'element-plus'
@@ -56,22 +61,20 @@
     const options = {
       moduleCache: {
         vue: Vue,
-        'element-plus': Elp
+        'element-plus': Elp,
       },
       async getFile(url) {
-
-        const res = await fetch(url);
+        const res = await fetch(url)
         if (!res.ok)
-          throw Object.assign(new Error(res.statusText + ' ' + url), { res });
+          throw Object.assign(new Error(res.statusText + ' ' + url), { res })
         return {
           getContentData: asBinary => asBinary ? res.arrayBuffer() : res.text(),
         }
       },
       addStyle(textContent) {
-
-        const style = Object.assign(document.createElement('style'), { textContent });
-        const ref = document.head.getElementsByTagName('style')[0] || null;
-        document.head.insertBefore(style, ref);
+        const style = Object.assign(document.createElement('style'), { textContent })
+        const ref = document.head.getElementsByTagName('style')[0] || null
+        document.head.insertBefore(style, ref)
       },
     }
 
