@@ -11,12 +11,24 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "paths": {
-      "#/*": ["types/*"]
+      "#/*": [
+        "types/*"
+      ]
     }
   },
   "ts-node": {
     "files": true
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "types/**/*.d.ts", "types/**/*.ts"],
-  "exclude": ["node_modules", "dist", "**/*.js", "**/tests/*"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "types/**/*.d.ts",
+    "types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.js",
+    "**/tests/*"
+  ]
 }

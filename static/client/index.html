@@ -88,7 +88,7 @@
 
     const app = createApp({
       components: {
-        'App': defineAsyncComponent(() => loadModule('./App.vue', options)),
+        'App': defineAsyncComponent(() => loadModule('/client/App.vue', options)),
       },
       setup() {
         const loading = ref(false)

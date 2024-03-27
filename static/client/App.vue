@@ -9,10 +9,14 @@
 import { ref } from 'vue'
 import CustomWord from './components/CustomWord.vue'
 import { ElButton } from 'element-plus'
+// @ts-ignore
+import { getFontPages } from './api/index.ts'
 
 const cwRef = ref<InstanceType<typeof CustomWord>>()
 
-function handleSave() {
+async function handleSave() {
+  const { list } = await getFontPages({ pageNum: 1, pageSize: 10 })
+  console.log('🚀 ~ handleSave ~ list:', list)
   cwRef.value?.handleSave()
 }
 </script>
