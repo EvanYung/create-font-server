@@ -24,13 +24,18 @@ export default class FontService {
     const [list, total] = await fontRepository.findAndCount({
       skip: (para.pageNum - 1) * para.pageSize,
       take: para.pageSize,
+      order: {
+        createdAt: 'DESC',
+      },
     })
 
     return Result.success(Result.page(list, total, para), 'get success')
   }
 
   async add(para: FontPara) {
-    const getFont = fs.existsSync(fontPath) ? fontCarrier.transfer(fontPath) : fontCarrier.create()
+    const getFont = fs.existsSync(fontPath)
+      ? fontCarrier.transfer(fontPath)
+      : fontCarrier.create()
 
     const fontRepository = MySqlDataSource.getRepository('fonts')
 

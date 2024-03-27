@@ -1,4 +1,10 @@
-import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn } from 'typeorm'
+import {
+  Entity,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm'
 
 @Entity('fonts')
 export class Font {
@@ -11,7 +17,14 @@ export class Font {
   @Column({ type: 'varchar', length: 255 })
   text: string
 
-  @CreateDateColumn({ type: 'timestamp', precision: 0, default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ type: 'longtext' })
+  svg: string
+
+  @CreateDateColumn({
+    type: 'timestamp',
+    precision: 0,
+    default: () => 'CURRENT_TIMESTAMP',
+  })
   createdAt: Date
 
   @UpdateDateColumn({

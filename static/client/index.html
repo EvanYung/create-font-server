@@ -7,10 +7,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>造字呀</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@unocss/reset/tailwind.min.css" />
-  <link rel="stylesheet" href="//unpkg.com/element-plus/dist/index.css" />
+  <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css" />
   <style>
     [un-cloak] {
       display: none;
+    }
+
+    html,
+    body {
+      font-family: 'Microsoft YaHei, CustomFont, PingFangSC-Regular, sans-serif, -apple-system, BlinkMacSystemFont';
     }
   </style>
   <script>
@@ -33,6 +38,7 @@
           "vue3-sfc-loader": "https://cdn.jsdelivr.net/npm/vue3-sfc-loader/dist/vue3-sfc-loader.esm.js",
           "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.prod.js",
           "element-plus": "https://unpkg.com/element-plus@latest/dist/index.full.min.mjs",
+          "element-plus/es/": "https://unpkg.com/element-plus@latest/es/",
           "@vue/shared": "https://unpkg.com/@vue/shared@latest/dist/shared.esm-bundler.js",
           "lodash/": "https://unpkg.com/lodash-es@4/",
           "@popperjs/core": "https://unpkg.com/@popperjs/core@2/dist/esm",
@@ -45,12 +51,14 @@
           "@vueuse/shared": "https://unpkg.com/@vueuse/shared/index.mjs",
           "@vueuse/core": "https://unpkg.com/@vueuse/core/index.mjs",
           "vue-demi": "https://unpkg.com/vue-demi/lib/v3/index.mjs",
-          "fabric": "https://cdn.jsdelivr.net/npm/fabric@5.2.4/+esm",
-          "svg-text-to-path": "https://cdn.jsdelivr.net/npm/svg-text-to-path@1.1.4/+esm"
+          "fabric": "https://cdn.jsdelivr.net/npm/fabric@5.3.0/+esm",
+          "svg-text-to-path": "https://cdn.jsdelivr.net/npm/svg-text-to-path@1.1.5/+esm",
+          "mapHandler": "https://unpkg.com/svg-text-to-path@1.1.5/handlers/map.js",
+          "httpHandler": "https://unpkg.com/svg-text-to-path@1.1.5/handlers/http.js"
       }
   }
   </script>
-  <div id="app" class="flex flex-col items-center justify-center h-screen">
+  <div id="app" class="flex flex-col items-center justify-center h-screen bg-[#eaeaea]">
     <App></App>
   </div>
   <script type="module">
@@ -59,17 +67,23 @@
     import { loadModule } from 'vue3-sfc-loader'
     import { createApp, ref, onMounted, defineAsyncComponent } from 'vue'
     import ElementPlus from 'element-plus'
+    import ElementPlusZhCn from 'element-plus/es/locale/lang/zh-cn.mjs'
     import * as Elp from 'element-plus'
     import * as fabric from 'fabric'
     import * as svgTextToPath from 'svg-text-to-path'
+    import mapHandler from 'mapHandler'
+    import httpHandler from 'httpHandler'
 
     const options = {
       moduleCache: {
         vue: Vue,
         fabric,
+        httpHandler,
+        mapHandler,
         'svg-text-to-path': svgTextToPath,
         '@vueuse/core': vueuse,
         'element-plus': Elp,
+        'element-plus/es/locale/lang/zh-cn': ElementPlusZhCn,
       },
       async getFile(url) {
         const res = await fetch(url)

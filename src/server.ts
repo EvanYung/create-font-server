@@ -57,6 +57,7 @@ app.use(
   helmet({
     referrerPolicy: { policy: 'origin' },
     contentSecurityPolicy: false,
+    crossOriginResourcePolicy: false,
   })
 )
 
@@ -91,7 +92,7 @@ app.use(
 const router = new Router({ prefix: ROUTER_PREFIX })
 
 // router
-AppRoutes.forEach(route => router[route.method](route.path, route.action))
+AppRoutes.forEach((route) => router[route.method](route.path, route.action))
 
 app.use(router.routes())
 

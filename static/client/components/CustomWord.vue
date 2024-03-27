@@ -1,12 +1,22 @@
 <script setup name="CustomWord" lang="ts">
 import { fabric } from 'fabric'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, nextTick } from 'vue'
 import QuickWord from './QuickWord.vue'
 
 import { onKeyStroke } from '@vueuse/core'
 import { ElMessage, ElButton, ElInput } from 'element-plus'
 // @ts-ignore
 import { replaceAllInString } from 'svg-text-to-path'
+
+// @ts-ignore
+import { addFont } from '../api/index.ts'
+// @ts-ignore
+import { loadFonts } from '../utils/load-fonts.ts'
+
+// @ts-ignore
+import mapHandler from 'mapHandler'
+// @ts-ignore
+import httpHandler from 'httpHandler'
 
 const canvasWidth = 400
 const canvasHeight = 400
@@ -79,15 +89,22 @@ async function handleSave() {
 
   const svgStr = fbCanvas.toSVG()
 
-  const out = await replaceAllInString(svgStr)
-
+  const out = await replaceAllInString(svgStr, {
+    // fontsUrl: '/fonts',
+    fontMap: {
+      SimSun: {
+        '400': '/fonts/SimSun/SimSun.ttf',
+      },
+    },
+    handlers: [mapHandler, httpHandler],
+    group: true,
+  })
   console.log('🚀 ~ handleSave ~ out:', out)
 
-  // await loadFonts()
+  await addFont({ svg: out, text: wordGroup.value })
 
-  // fbObjects.value = []
-  // fbCanvas.dispose()
-  // fbCanvas.setBackgroundColor('#F8F9FB', () => {})
+  loadFonts()
+  resetFabric()
 }
 
 defineExpose({
@@ -100,6 +117,12 @@ function initFabric() {
     height: canvasHeight,
     backgroundColor: '#F8F9FB',
   })
+}
+
+function resetFabric() {
+  fbObjects.value = []
+  fbCanvas.clear()
+  fbCanvas.setBackgroundColor('#F8F9FB', () => {})
 }
 
 onMounted(() => {

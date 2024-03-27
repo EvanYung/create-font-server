@@ -1,24 +1,152 @@
 <template>
-  <div>
-    <CustomWord ref="cwRef" />
-    <ElButton @click="handleSave">保存</ElButton>
-  </div>
+  <ElConfigProvider :locale="zhCn">
+    <div w-1200px h-800px rounded-8px p-20px bg-white>
+      <div class="flex mb-20px">
+        <div class="flex">
+          <div class="mr-2.5 w-180px">
+            <ElInput
+              v-model:value="filter.searchKey"
+              placeholder="请输入字体组成搜索"
+              clearable
+            />
+          </div>
+          <ElButton
+            type="primary"
+            class="mr-2.5"
+            clearable
+            @click="handleSearch"
+            >搜索</ElButton
+          >
+          <ElDropdown trigger="click" placement="bottom-start">
+            <ElButton type="primary" plain>部首快查</ElButton>
+            <template #dropdown>
+              <QuickWord @choose="handleChoose" class="quick-word-box" />
+            </template>
+          </ElDropdown>
+        </div>
+        <ElButton
+          type="primary"
+          class="ml-auto"
+          @click="createFontVisible = true"
+          >自定义造字</ElButton
+        >
+      </div>
+
+      <template v-if="wordList.length">
+        <div
+          class="grid grid-cols-[repeat(auto-fill,125px)] grid-auto-rows-140px gap-20px h-300px"
+        >
+          <div
+            v-for="item in wordList"
+            :key="item.id"
+            class="flex flex-col items-center justify-center border border-[#e1e5ec] rounded-2px cursor-pointer py-10px"
+            @click="handleCopy(item)"
+          >
+            <div v-html="item.svg" class="svg-box"></div>
+            <div class="mt-10px">{{ item.text || '--' }}</div>
+          </div>
+        </div>
+        <div class="mt-20px flex justify-center">
+          <ElPagination
+            v-model:current-page="filter.pageNum"
+            small
+            background
+            layout="prev, pager, next"
+            :page-size="filter.pageSize"
+            :total="total"
+            @change="getWordPage"
+          />
+        </div>
+      </template>
+      <div class="mt-40px" v-else>
+        <ElEmpty />
+      </div>
+
+      <ElDialog title="自定义造字" width="800px" v-model="createFontVisible">
+        <CustomWord ref="cwRef" />
+        <div class="py-20px flex justify-end">
+          <ElButton type="primary" @click="handleSave">保存</ElButton>
+        </div>
+      </ElDialog>
+    </div>
+  </ElConfigProvider>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 import CustomWord from './components/CustomWord.vue'
-import { ElButton } from 'element-plus'
+import QuickWord from './components/QuickWord.vue'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
+import { ElConfigProvider } from 'element-plus'
+import {
+  ElButton,
+  ElInput,
+  ElDropdown,
+  ElDialog,
+  ElPagination,
+  ElMessage,
+  ElEmpty,
+} from 'element-plus'
 // @ts-ignore
-import { getFontPages } from './api/index.ts'
+import { getFontPages, FontDto } from './api/index.ts'
+// @ts-ignore
+import { loadFonts } from './utils/load-fonts.ts'
+
+import { useClipboard } from '@vueuse/core'
 
 const cwRef = ref<InstanceType<typeof CustomWord>>()
 
-async function handleSave() {
-  const { list } = await getFontPages({ pageNum: 1, pageSize: 10 })
-  console.log('🚀 ~ handleSave ~ list:', list)
-  cwRef.value?.handleSave()
+const wordList = ref<FontDto[]>([])
+
+const createFontVisible = ref(false)
+
+const total = ref(0)
+
+const filter = ref({
+  pageNum: 1,
+  pageSize: 16,
+  searchKey: '',
+})
+
+async function getWordPage() {
+  const { list, total: _total } = await getFontPages(filter.value)
+  wordList.value = list
+  total.value = _total
 }
+
+function handleSearch() {
+  filter.value.pageNum = 1
+  getWordPage()
+}
+
+function handleChoose(ret: string) {
+  filter.value.searchKey += ret
+  handleSearch()
+}
+
+async function handleSave() {
+  await cwRef.value?.handleSave()
+
+  createFontVisible.value = false
+
+  getWordPage()
+}
+
+function handleCopy(item: FontDto) {
+  const fontCode = item.code
+  const { copy } = useClipboard({ source: fontCode })
+  copy()
+  ElMessage.success('复制成功')
+}
+
+getWordPage()
+
+loadFonts()
 </script>
 
-<style scoped></style>
+<style scoped>
+:deep(.svg-box svg) {
+  width: 90px;
+  height: 90px;
+}
+</style>

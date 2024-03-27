@@ -13,10 +13,20 @@ interface PageResult<T> {
   total: number
 }
 
-interface FontDto {
+export interface FontDto {
+  id: number
   text: string
+  code: string
   svg: string
 }
 
 export const getFontPages = (params: PageParams) =>
   request<PageResult<FontDto>>({ url: '/fontPages', params })
+
+interface AddFontStruct {
+  text: string
+  svg: string
+}
+
+export const addFont = (body: AddFontStruct) =>
+  request<boolean>({ url: '/addFont', method: 'POST', body })
