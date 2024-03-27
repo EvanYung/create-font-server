@@ -1,4 +1,4 @@
-const fontUrl = 'http://172.16.50.12:7800/fonts/createFont.ttf'
+const fontUrl = 'http://localhost:7800/fonts/createFont.ttf'
 
 export async function loadDocumentFonts() {
   const font = new FontFace(

@@ -1,6 +1,6 @@
 import { obj2Param } from './index.ts'
 
-const baseUrl = 'http://172.16.50.12:7800/evan'
+const baseUrl = 'http://localhost:7800/evan'
 
 export function getHeaders(defaultHeaders = {}) {
   return {

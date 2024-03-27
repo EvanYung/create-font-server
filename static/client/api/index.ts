@@ -30,3 +30,6 @@ interface AddFontStruct {
 
 export const addFont = (body: AddFontStruct) =>
   request<boolean>({ url: '/addFont', method: 'POST', body })
+
+export const deleteFont = (params: { id: number }) =>
+  request<boolean>({ url: '/deleteFont', params })

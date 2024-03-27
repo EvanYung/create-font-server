@@ -1,7 +1,8 @@
 <template>
   <ElConfigProvider :locale="zhCn">
     <div w-1200px h-800px rounded-8px p-20px bg-white>
-      <div class="flex mb-20px">
+      <div>造字（点击即可复制文字，右键删除文字）</div>
+      <div class="flex my-20px">
         <div class="flex">
           <div class="mr-2.5 w-180px">
             <ElInput
@@ -41,6 +42,7 @@
             :key="item.id"
             class="flex flex-col items-center justify-center border border-[#e1e5ec] rounded-2px cursor-pointer py-10px"
             @click="handleCopy(item)"
+            @contextmenu.prevent="handleDelete(item.id)"
           >
             <div v-html="item.svg" class="svg-box"></div>
             <div class="mt-10px">{{ item.text || '--' }}</div>
@@ -68,6 +70,13 @@
           <ElButton type="primary" @click="handleSave">保存</ElButton>
         </div>
       </ElDialog>
+      <ElInput
+        class="mt-30px"
+        type="textarea"
+        :autosize="{ minRows: 2, maxRows: 4 }"
+        placeholder="粘贴文字查看"
+        v-model="testWord"
+      />
     </div>
   </ElConfigProvider>
 </template>
@@ -77,8 +86,8 @@ import { ref } from 'vue'
 import CustomWord from './components/CustomWord.vue'
 import QuickWord from './components/QuickWord.vue'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
-import { ElConfigProvider } from 'element-plus'
 import {
+  ElConfigProvider,
   ElButton,
   ElInput,
   ElDropdown,
@@ -88,7 +97,7 @@ import {
   ElEmpty,
 } from 'element-plus'
 // @ts-ignore
-import { getFontPages, FontDto } from './api/index.ts'
+import { getFontPages, deleteFont, FontDto } from './api/index.ts'
 // @ts-ignore
 import { loadFonts } from './utils/load-fonts.ts'
 
@@ -99,6 +108,8 @@ const cwRef = ref<InstanceType<typeof CustomWord>>()
 const wordList = ref<FontDto[]>([])
 
 const createFontVisible = ref(false)
+
+const testWord = ref('')
 
 const total = ref(0)
 
@@ -132,11 +143,24 @@ async function handleSave() {
   getWordPage()
 }
 
+function unicodeToChar(text: string) {
+  return text.replace(/\\u[\dA-F]+/gi, function (match) {
+    return String.fromCharCode(parseInt(match.replace(/\\u/g, ''), 16))
+  })
+}
+
 function handleCopy(item: FontDto) {
   const fontCode = item.code
-  const { copy } = useClipboard({ source: fontCode })
+  const unicode = fontCode.replace('&#x', '\\u').replace(';', '')
+  const charCode = unicodeToChar(unicode)
+  const { copy } = useClipboard({ source: charCode })
   copy()
   ElMessage.success('复制成功')
+}
+
+async function handleDelete(id: number) {
+  await deleteFont({ id })
+  getWordPage()
 }
 
 getWordPage()

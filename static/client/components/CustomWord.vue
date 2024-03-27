@@ -109,6 +109,7 @@ async function handleSave() {
 
 defineExpose({
   handleSave,
+  resetFabric,
 })
 
 function initFabric() {
