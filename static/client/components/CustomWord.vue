@@ -6,17 +6,12 @@ import QuickWord from './QuickWord.vue'
 import { onKeyStroke } from '@vueuse/core'
 import { ElMessage, ElButton, ElInput } from 'element-plus'
 // @ts-ignore
-import { replaceAllInString } from 'svg-text-to-path'
+import SvgTextToPath from 'svg-text-to-path'
 
 // @ts-ignore
 import { addFont } from '../api/index.ts'
 // @ts-ignore
 import { loadFonts } from '../utils/load-fonts.ts'
-
-// @ts-ignore
-import mapHandler from 'mapHandler'
-// @ts-ignore
-import httpHandler from 'httpHandler'
 
 const canvasWidth = 400
 const canvasHeight = 400
@@ -89,16 +84,21 @@ async function handleSave() {
 
   const svgStr = fbCanvas.toSVG()
 
-  const out = await replaceAllInString(svgStr, {
-    // fontsUrl: '/fonts',
-    fontMap: {
-      SimSun: {
-        '400': '/fonts/SimSun/SimSun.ttf',
-      },
+  const session = new SvgTextToPath(svgStr, {
+    fonts: {
+      SimSun: [
+        {
+          wght: 400,
+          ital: 0,
+          source: '/client/fonts/SimSun/SimSun.ttf',
+        },
+      ],
     },
-    handlers: [mapHandler, httpHandler],
-    group: true,
+    keepFontAttrs: false,
   })
+  await session.replaceAll()
+  const out = session.getSvgString()
+
   console.log('🚀 ~ handleSave ~ out:', out)
 
   await addFont({ svg: out, text: wordGroup.value })
@@ -138,7 +138,7 @@ onMounted(() => {
     <div class="ml-4 flex-1">
       <div class="flex mb-2">
         <ElInput
-          v-model:value="word"
+          v-model="word"
           :maxlength="1"
           placeholder="插入单个整字"
           clearable

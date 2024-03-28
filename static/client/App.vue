@@ -6,7 +6,7 @@
         <div class="flex">
           <div class="mr-2.5 w-180px">
             <ElInput
-              v-model:value="filter.searchKey"
+              v-model="filter.searchKey"
               placeholder="请输入字体组成搜索"
               clearable
             />
