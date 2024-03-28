@@ -83,6 +83,7 @@ async function handleSave() {
   fbCanvas.setBackgroundColor('#fff', () => {})
 
   const svgStr = fbCanvas.toSVG()
+  console.log('🚀 ~ handleSave ~ svgStr:', svgStr)
 
   const session = new SvgTextToPath(svgStr, {
     fonts: {
@@ -94,7 +95,6 @@ async function handleSave() {
         },
       ],
     },
-    keepFontAttrs: false,
   })
   await session.replaceAll()
   const out = session.getSvgString()
@@ -152,21 +152,9 @@ onMounted(() => {
       <QuickWord @choose="addText" />
     </div>
   </div>
-  <div class="fb-tips">
+  <div class="text-size-12px text-[#293449] mt-20px leading-16px">
     提示：选中造字器中的文字，可鼠标拖动，按Delete即可删除
   </div>
 </template>
 
-<style scoped>
-#fb-canvas {
-  width: 400px;
-  height: 400px;
-}
-
-.fb-tips {
-  font-size: 12px;
-  color: #293449;
-  line-height: 16px;
-  margin-top: 20px;
-}
-</style>
+<style scoped></style>
