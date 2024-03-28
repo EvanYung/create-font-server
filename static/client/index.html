@@ -68,13 +68,46 @@
     import ElementPlusZhCn from 'element-plus/es/locale/lang/zh-cn.mjs'
     import * as Elp from 'element-plus'
     import * as fabric from 'fabric'
-    import svgTextToPath from 'svg-text-to-path'
+    import SvgTextToPath from 'svg-text-to-path'
+
+    setTimeout(async () => {
+      const svgStr = `<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="400" height="400" viewBox="0 0 400 400" xml:space="preserve">
+<desc>Created with Fabric.js 5.3.0</desc>
+<defs>
+</defs>
+<rect x="0" y="0" width="100%" height="100%" fill="#fff"></rect>
+<g transform="matrix(1 0 0 1 200.5 220)" style=""  >
+		<text xml:space="preserve" font-family="SimSun" font-size="300" font-style="normal" font-weight="normal" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1; white-space: pre;" ><tspan x="-150" y="94.24" >〇</tspan></text>
+</g>
+<g transform="matrix(1 0 0 1 220.5 240)" style=""  >
+		<text xml:space="preserve" font-family="SimSun" font-size="300" font-style="normal" font-weight="normal" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1; white-space: pre;" ><tspan x="-150" y="94.24" >几</tspan></text>
+</g>
+</svg>`
+
+      const session = new SvgTextToPath(svgStr, {
+        fonts: {
+          SimSun: [
+            {
+              wght: 400,
+              ital: 0,
+              source: '/client/fonts/SimSun/SimSun.ttf'
+            }
+          ]
+        }
+      })
+      await session.replaceAll()
+      const out = session.getSvgString()
+
+      console.log('🚀 ~ handleSave ~ out:', out)
+    }, 20)
 
     const options = {
       moduleCache: {
         vue: Vue,
         fabric,
-        'svg-text-to-path': svgTextToPath,
+        'svg-text-to-path': SvgTextToPath,
         '@vueuse/core': vueuse,
         'element-plus': Elp,
         'element-plus/es/locale/lang/zh-cn': ElementPlusZhCn,

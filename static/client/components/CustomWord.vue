@@ -83,6 +83,7 @@ async function handleSave() {
   fbCanvas.setBackgroundColor('#fff', () => {})
 
   const svgStr = fbCanvas.toSVG()
+
   console.log('🚀 ~ handleSave ~ svgStr:', svgStr)
 
   const session = new SvgTextToPath(svgStr, {
