@@ -77,22 +77,26 @@ export function structErrorMsg(error: any) {
   }
 }
 
-export function permute(arr: any[]) {
-  // 如果数组长度只有一个，返回当前数组
-  if (arr.length <= 1) return [arr]
-
+export function permuteUnique(arr: any[]) {
   let res = []
-  // 遍历数组的每一位
-  for (let i = 0; i < arr.length; i++) {
-    // 获取当前位置的元素
-    let current = arr[i]
-    // 获取剩下的元素
-    let remainingArray = arr.slice(0, i).concat(arr.slice(i + 1))
-    // 对剩下的元素再次进行全排列
-    let remainingPermute = permute(remainingArray)
-    // 将当前元素添加到全排列的数组前面
-    for (let arr of remainingPermute) {
-      res.push([current].concat(arr))
+  let visited = Array(arr.length).fill(false)
+  arr.sort((a, b) => a - b)
+
+  permute([], visited)
+
+  function permute(temp: any[], visited: any[]) {
+    if (temp.length == arr.length) {
+      res.push([...temp])
+      return
+    }
+    for (let i = 0; i < arr.length; i++) {
+      if (visited[i]) continue // 当前元素已经被访问过
+      if (i > 0 && arr[i] == arr[i - 1] && visited[i - 1]) continue // 去重
+      temp.push(arr[i])
+      visited[i] = true
+      permute(temp, visited)
+      visited[i] = false
+      temp.pop()
     }
   }
   return res

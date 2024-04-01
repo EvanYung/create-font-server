@@ -5,7 +5,7 @@ import fsx from 'fs-extra'
 import * as fs from 'node:fs'
 import * as path from 'node:path'
 import { MySqlDataSource } from 'src/config/database'
-import { permute } from 'src/utils'
+import { permuteUnique } from 'src/utils'
 import { Like } from 'typeorm'
 
 export interface FontPara {
@@ -26,7 +26,7 @@ export default class FontService {
     const searchArray: string[] = para.searchKey?.split('') || []
     let orConditions = []
 
-    for (let search of permute(searchArray)) {
+    for (let search of permuteUnique(searchArray)) {
       orConditions.push({ text: Like(`%${search.join(',')}%`) })
     }
 
