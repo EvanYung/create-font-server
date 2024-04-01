@@ -21,11 +21,10 @@ class FontController {
 
       if (errors) throw { code: 400, message: JSON.stringify(errors) }
 
-      console.log(ctx.query.searchKey)
-
       const para: PageParams = {
         pageNum: +ctx.query.pageNum,
         pageSize: +ctx.query.pageSize || 10,
+        searchKey: ctx.query.searchKey,
       }
       ctx.body = await this.service.pages(para)
     } catch (err) {
