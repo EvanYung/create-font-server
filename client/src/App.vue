@@ -1,72 +1,3 @@
-<template>
-  <ElConfigProvider :locale="zhCn">
-    <div class="flex flex-col items-center justify-center h-screen bg-[#eaeaea]">
-      <div w-1200px h-800px rounded-8px p-20px bg-white>
-        <div>造字（点击即可复制文字，右键删除文字）</div>
-        <div class="flex my-20px">
-          <div class="flex">
-            <div class="mr-2.5 w-180px">
-              <ElInput v-model="filter.searchKey" placeholder="请输入字体组成搜索" clearable @clear="handleSearch" />
-            </div>
-            <ElButton type="primary" class="mr-2.5" clearable @click="handleSearch">搜索</ElButton>
-            <ElDropdown trigger="click" placement="bottom-start">
-              <ElButton type="primary" plain>部首快查</ElButton>
-              <template #dropdown>
-                <QuickWord @choose="handleChoose" class="quick-word-box" />
-              </template>
-            </ElDropdown>
-          </div>
-          <ElButton type="primary" class="ml-auto" @click="createFontVisible = true">自定义造字</ElButton>
-        </div>
-
-        <template v-if="wordList.length">
-          <div class="grid grid-cols-[repeat(auto-fill,125px)] grid-auto-rows-140px gap-20px h-300px">
-            <div
-              v-for="item in wordList"
-              :key="item.id"
-              class="flex flex-col items-center justify-center border border-[#e1e5ec] rounded-2px cursor-pointer py-10px"
-              @click="handleCopy(item)"
-              @contextmenu.prevent="handleDelete(item.id)"
-            >
-              <div v-html="item.svg" class="svg-box"></div>
-              <div class="mt-10px">{{ item.text || '--' }}</div>
-            </div>
-          </div>
-          <div class="mt-20px flex justify-center">
-            <ElPagination
-              v-model:current-page="filter.pageNum"
-              small
-              background
-              layout="prev, pager, next"
-              :page-size="filter.pageSize"
-              :total="total"
-              @change="getWordPage"
-            />
-          </div>
-        </template>
-        <div class="mt-40px" v-else>
-          <ElEmpty />
-        </div>
-
-        <ElDialog title="自定义造字" width="800px" v-model="createFontVisible">
-          <CustomWord ref="cwRef" />
-          <div class="py-20px flex justify-end">
-            <ElButton @click="cwRef?.resetFabric">清空</ElButton>
-            <ElButton type="primary" @click="handleSave">保存</ElButton>
-          </div>
-        </ElDialog>
-        <ElInput
-          class="mt-30px text-18px"
-          type="textarea"
-          :autosize="{ minRows: 2, maxRows: 4 }"
-          placeholder="粘贴文字查看"
-          v-model="testWord"
-        />
-      </div>
-    </div>
-  </ElConfigProvider>
-</template>
-
 <script setup lang="ts">
   import { ref } from 'vue'
   import CustomWord from './components/CustomWord.vue'
@@ -151,6 +82,75 @@
 
   loadFonts()
 </script>
+
+<template>
+  <ElConfigProvider :locale="zhCn">
+    <div class="flex flex-col items-center justify-center h-screen bg-[#eaeaea]">
+      <div w-1200px h-800px rounded-8px p-20px bg-white>
+        <div>造字（点击即可复制文字，右键删除文字）</div>
+        <div class="flex my-20px">
+          <div class="flex">
+            <div class="mr-2.5 w-180px">
+              <ElInput v-model="filter.searchKey" placeholder="请输入字体组成搜索" clearable @clear="handleSearch" />
+            </div>
+            <ElButton type="primary" class="mr-2.5" clearable @click="handleSearch">搜索</ElButton>
+            <ElDropdown trigger="click" placement="bottom-start">
+              <ElButton type="primary" plain>部首快查</ElButton>
+              <template #dropdown>
+                <QuickWord @choose="handleChoose" class="quick-word-box" />
+              </template>
+            </ElDropdown>
+          </div>
+          <ElButton type="primary" class="ml-auto" @click="createFontVisible = true">自定义造字</ElButton>
+        </div>
+
+        <template v-if="wordList.length">
+          <div class="grid grid-cols-[repeat(auto-fill,125px)] grid-auto-rows-140px gap-20px h-300px">
+            <div
+              v-for="item in wordList"
+              :key="item.id"
+              class="flex flex-col items-center justify-center border border-[#e1e5ec] rounded-2px cursor-pointer py-10px"
+              @click="handleCopy(item)"
+              @contextmenu.prevent="handleDelete(item.id)"
+            >
+              <div v-html="item.svg" class="svg-box"></div>
+              <div class="mt-10px">{{ item.text || '--' }}</div>
+            </div>
+          </div>
+          <div class="mt-20px flex justify-center">
+            <ElPagination
+              v-model:current-page="filter.pageNum"
+              small
+              background
+              layout="prev, pager, next"
+              :page-size="filter.pageSize"
+              :total="total"
+              @change="getWordPage"
+            />
+          </div>
+        </template>
+        <div class="mt-40px" v-else>
+          <ElEmpty />
+        </div>
+
+        <ElDialog title="自定义造字" width="800px" v-model="createFontVisible">
+          <CustomWord ref="cwRef" />
+          <div class="py-20px flex justify-end">
+            <ElButton @click="cwRef?.resetFabric">清空</ElButton>
+            <ElButton type="primary" @click="handleSave">保存</ElButton>
+          </div>
+        </ElDialog>
+        <ElInput
+          class="mt-30px text-18px"
+          type="textarea"
+          :autosize="{ minRows: 2, maxRows: 4 }"
+          placeholder="粘贴文字查看"
+          v-model="testWord"
+        />
+      </div>
+    </div>
+  </ElConfigProvider>
+</template>
 
 <style>
   html,
