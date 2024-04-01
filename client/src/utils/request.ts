@@ -1,4 +1,4 @@
-import { obj2Param } from './index.ts'
+import { obj2Param } from './index'
 
 const baseUrl = 'http://localhost:7800/evan'
 
@@ -16,17 +16,9 @@ interface RequestOptions {
   body?: Record<string, any>
 }
 
-export const request = <T>({
-  url,
-  method = 'GET',
-  params,
-  body,
-}: RequestOptions) =>
+export const request = <T>({ url, method = 'GET', params, body }: RequestOptions) =>
   new Promise<T>((resolve, reject) => {
-    const _url =
-      method === 'GET'
-        ? obj2Param(`${baseUrl}${url}`, params)
-        : `${baseUrl}${url}`
+    const _url = method === 'GET' ? obj2Param(`${baseUrl}${url}`, params) : `${baseUrl}${url}`
 
     const options: RequestInit = {
       method,
@@ -36,8 +28,8 @@ export const request = <T>({
     ;['POST', 'PUT'].includes(method) && (options.body = JSON.stringify(body))
 
     fetch(_url, options)
-      .then((res) => res.json())
-      .then((res) => {
+      .then(res => res.json())
+      .then(res => {
         const { code, message, data } = res
 
         if (code !== 0) {
@@ -46,5 +38,5 @@ export const request = <T>({
           resolve(data)
         }
       })
-      .catch((err) => reject(err))
+      .catch(err => reject(err))
   })

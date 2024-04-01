@@ -20,7 +20,6 @@ import staticValidator from './middlewares/staticValidator'
 import errorHandler from './middlewares/errorHandler'
 import { MySqlDataSource } from './config/database'
 
-// @ts-expect-error
 const app = websockify(new Koa())
 
 app.ws.use(function (ctx, next) {
@@ -92,7 +91,7 @@ app.use(
 const router = new Router({ prefix: ROUTER_PREFIX })
 
 // router
-AppRoutes.forEach((route) => router[route.method](route.path, route.action))
+AppRoutes.forEach(route => router[route.method](route.path, route.action))
 
 app.use(router.routes())
 
