@@ -6,7 +6,7 @@
         <div class="flex my-20px">
           <div class="flex">
             <div class="mr-2.5 w-180px">
-              <ElInput v-model="filter.searchKey" placeholder="请输入字体组成搜索" clearable />
+              <ElInput v-model="filter.searchKey" placeholder="请输入字体组成搜索" clearable @clear="handleSearch" />
             </div>
             <ElButton type="primary" class="mr-2.5" clearable @click="handleSearch">搜索</ElButton>
             <ElDropdown trigger="click" placement="bottom-start">
@@ -56,7 +56,7 @@
           </div>
         </ElDialog>
         <ElInput
-          class="mt-30px font-CustomFont"
+          class="mt-30px text-18px"
           type="textarea"
           :autosize="{ minRows: 2, maxRows: 4 }"
           placeholder="粘贴文字查看"
