@@ -1,13 +1,13 @@
-# Koa Server
+# 自定义造字应用
 
-It is used to start a koa service, which can test the upload, websocket, login and other interfaces.
+服务端基于Koa，客户端基于vite+vue3+element-ui
 
-## Usage
+## 使用
 
 ```bash
 
-yarn install
+pnpm install
 
-yarn run start
+pnpm run dev
 
 ```
