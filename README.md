@@ -1,6 +1,6 @@
 # 自定义造字应用
 
-服务端基于Koa，客户端基于vite+vue3+element-ui
+🎨 📝 自定义造字应用，服务端基于Koa，客户端基于Vite+Vue3+Fabric.js
 
 ## 使用
 
